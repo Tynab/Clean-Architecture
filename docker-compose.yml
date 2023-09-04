@@ -1,12 +1,12 @@
 version: '3.4'
 
 services:
-  clean_architecture.web:
+  web:
     image: ${DOCKER_REGISTRY-}clean_architecture_web
     container_name: clean_architecture_web
     build:
       context: .
-      dockerfile: Web/Dockerfile
+      dockerfile: Dockerfile
     ports:
       - 5000:80
       - 5001:443
@@ -14,13 +14,11 @@ services:
       - clean_architecture.db
 
   clean_architecture.db:
-    image: postgres
+    image: postgres:13.2
     container_name: clean_architecture_db
     environment:
       - POSTGRES_DB=webinar
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin123@
-    volumes:
-      - ./files/db:/var/lib/postgresql/data
     ports:
       - 5432:5432

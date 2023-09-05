@@ -13,8 +13,7 @@ public sealed class GetWebinarQueryHandler : IQueryHandler<GetWebinarByIdQuery, 
 
     public async Task<WebinarResponse> Handle(GetWebinarByIdQuery request, CancellationToken cancellationToken)
     {
-        const string sql = @"SELECT * FROM ""Webinars"" WHERE ""Id"" = @WebinarId";
-        var webinar = await _dbConnection.QueryFirstOrDefaultAsync<WebinarResponse>(sql, new
+        var webinar = await _dbConnection.QueryFirstOrDefaultAsync<WebinarResponse>(@"SELECT * FROM ""Webinars"" WHERE ""Id"" = @WebinarId", new
         {
             request.WebinarId
         });

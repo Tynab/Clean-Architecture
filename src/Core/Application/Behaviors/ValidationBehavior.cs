@@ -17,17 +17,11 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             return await next();
         }
 
-        var context = new ValidationContext<TRequest>(request);
-        var errorsDictionary = _validators
-            .Select(x => x.Validate(context))
-            .SelectMany(x => x.Errors)
-            .Where(x => x is not null)
-            .GroupBy(x => x.PropertyName, x => x.ErrorMessage, (propertyName, errorMessage) => new
-            {
-                Key = propertyName,
-                Values = errorMessage.Distinct().ToArray()
-            })
-            .ToDictionary(x => x.Key, x => x.Values);
+        var errorsDictionary = _validators.Select(x => x.Validate(new ValidationContext<TRequest>(request))).SelectMany(x => x.Errors).Where(x => x is not null).GroupBy(x => x.PropertyName, x => x.ErrorMessage, (propertyName, errorMessage) => new
+        {
+            Key = propertyName,
+            Values = errorMessage.Distinct().ToArray()
+        }).ToDictionary(x => x.Key, x => x.Values);
 
         return errorsDictionary.Any() ? throw new Exceptions.ValidationException(errorsDictionary) : await next();
     }

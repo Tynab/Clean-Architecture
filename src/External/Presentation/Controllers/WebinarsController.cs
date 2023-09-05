@@ -20,13 +20,7 @@ public sealed class WebinarsController : ApiController
     [HttpGet("{webinarId:guid}")]
     [ProducesResponseType(typeof(WebinarResponse), Status200OK)]
     [ProducesResponseType(Status404NotFound)]
-    public async ValueTask<IActionResult> GetWebinar(Guid webinarId, CancellationToken cancellationToken)
-    {
-        var query = new GetWebinarByIdQuery(webinarId);
-        var webinar = await Sender!.Send(query, cancellationToken);
-
-        return Ok(webinar);
-    }
+    public async ValueTask<IActionResult> GetWebinar(Guid webinarId, CancellationToken cancellationToken) => Ok(await Sender!.Send(new GetWebinarByIdQuery(webinarId), cancellationToken));
 
     /// <summary>
     /// Creates a new webinar based on the specified request.
@@ -39,8 +33,7 @@ public sealed class WebinarsController : ApiController
     [ProducesResponseType(Status404NotFound)]
     public async Task<IActionResult> CreateWebinar([FromBody] CreateWebinarRequest request, CancellationToken cancellationToken)
     {
-        var command = request.Adapt<CreateWebinarCommand>();
-        var webinarId = await Sender!.Send(command, cancellationToken);
+        var webinarId = await Sender!.Send(request.Adapt<CreateWebinarCommand>(), cancellationToken);
 
         return CreatedAtAction(nameof(GetWebinar), new
         {

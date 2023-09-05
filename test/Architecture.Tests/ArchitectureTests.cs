@@ -17,16 +17,14 @@ public class ArchitectureTests
         //  Arrange
         var assembly = typeof(Domain.AssemblyReference).Assembly;
 
-        var otherProjects = new[]
+        // Act
+        var testResult = InAssembly(assembly).ShouldNot().HaveDependencyOnAll(new[]
         {
             ApplicationNamespace,
             InfrastructureNamespace,
             PresentationNamespace,
             WebNamespace
-        };
-
-        // Act
-        var testResult = InAssembly(assembly).ShouldNot().HaveDependencyOnAll(otherProjects).GetResult();
+        }).GetResult();
 
         // Assert
         _ = testResult.IsSuccessful.Should().BeTrue();
@@ -38,16 +36,14 @@ public class ArchitectureTests
         //  Arrange
         var assembly = typeof(Application.AssemblyReference).Assembly;
 
-        var otherProjects = new[]
+        // Act
+        var testResult = InAssembly(assembly).ShouldNot().HaveDependencyOnAll(new[]
         {
             DomainNamespace,
             InfrastructureNamespace,
             PresentationNamespace,
             WebNamespace
-        };
-
-        // Act
-        var testResult = InAssembly(assembly).ShouldNot().HaveDependencyOnAll(otherProjects).GetResult();
+        }).GetResult();
 
         // Assert
         _ = testResult.IsSuccessful.Should().BeTrue();
@@ -59,16 +55,14 @@ public class ArchitectureTests
         //  Arrange
         var assembly = typeof(Infrastructure.AssemblyReference).Assembly;
 
-        var otherProjects = new[]
+        // Act
+        var testResult = InAssembly(assembly).ShouldNot().HaveDependencyOnAll(new[]
         {
             DomainNamespace,
             ApplicationNamespace,
             PresentationNamespace,
             WebNamespace
-        };
-
-        // Act
-        var testResult = InAssembly(assembly).ShouldNot().HaveDependencyOnAll(otherProjects).GetResult();
+        }).GetResult();
 
         // Assert
         _ = testResult.IsSuccessful.Should().BeTrue();
@@ -80,16 +74,14 @@ public class ArchitectureTests
         //  Arrange
         var assembly = typeof(Presentation.AssemblyReference).Assembly;
 
-        var otherProjects = new[]
+        // Act
+        var testResult = InAssembly(assembly).ShouldNot().HaveDependencyOnAll(new[]
         {
             DomainNamespace,
             ApplicationNamespace,
             InfrastructureNamespace,
             WebNamespace
-        };
-
-        // Act
-        var testResult = InAssembly(assembly).ShouldNot().HaveDependencyOnAll(otherProjects).GetResult();
+        }).GetResult();
 
         // Assert
         _ = testResult.IsSuccessful.Should().BeTrue();

@@ -30,12 +30,11 @@ public class Startup
         _ = services.AddMediatR(applicationAssembly);
         _ = services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         _ = services.AddValidatorsFromAssembly(applicationAssembly);
+
         _ = services.AddSwaggerGen(c =>
         {
-            var presentationDocumentationFile = $"{presentationAssembly.GetName().Name}.xml";
-            var presentationDocumentationFilePath = Combine(BaseDirectory, presentationDocumentationFile);
+            c.IncludeXmlComments(Combine(BaseDirectory, $"{presentationAssembly.GetName().Name}.xml"));
 
-            c.IncludeXmlComments(presentationDocumentationFilePath);
             c.SwaggerDoc("v1", new OpenApiInfo
             {
                 Title = "Web",

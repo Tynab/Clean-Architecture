@@ -1,2 +1,2 @@
 # Clean-Architecture
- Clean architecture & CQRS example
+ Clean architecture & CQRS example.
